@@ -123,7 +123,7 @@ public class GestionOS {
   public void deleteOrder(Scanner scanner) {
     Order order;
     System.out.print("Order ID: ");
-    String orderId = scanner.next(); // No estoy seguro de si orderId es String o int
+    int orderId = scanner.nextInt(); 
     order =this.ordersController.returnOrder(orderId);
     if (order.isCancellable()){
       this.ordersController.delete(order);

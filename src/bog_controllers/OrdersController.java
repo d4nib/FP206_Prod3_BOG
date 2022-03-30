@@ -53,10 +53,10 @@ public class OrdersController {
   }
 
   // Return Order from ID/SKU
-  public Order returnOrder(String id){
+  public Order returnOrder(int id){
     Order order = null;
     for (int i = 0; i < this.dataStore.lenghtOrders(); i++){
-      if (id.equals(this.dataStore.getOrders().get(i).getorderID())){
+      if (id == this.dataStore.getOrders().get(i).getorderID()){
         order = this.dataStore.getOrders().get(i);
       }
     }
