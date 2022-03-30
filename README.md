@@ -1,16 +1,15 @@
-## Producto 3. Persistencia en base de datos
+
+# Producto 3 - Persistencia en ase de datos
+
 Fecha de entrega 14 de abril - 23:59 
 
-## Descripción 
 A partir del diagrama de clases, realizado en el primer producto, realizaremos la adaptación del diseño orientado a objetos al modelo relacional. A partir de esta adaptación implementaremos, en lenguaje Java utilizando JDBC, la persistencia en una base de datos relacional. 
 
-## Objetivos 
-`El objetivo principal de la actividad es:`
+## `Objetivos` 
 Aplicar la persistencia en bases de datos usando los patrones de diseño DAO y Factory. 
 
 
-## Pasos a seguir 
-`Los pasos a seguir para llevar a cabo el producto son: `
+## `Pasos a seguir `
 Leer detenidamente estas instrucciones e identificar los requisitos de la actividad. 
 Revisar detenidamente la rúbrica de evaluación. 
 Consultar los recursos necesarios facilitados en el aula. 
@@ -27,7 +26,7 @@ Realiza un video mostrando la ejecución de todo el programa en todas sus opcion
 Se requiere Event personal
 
 
-## Los requisitos indispensables para realizar el producto son: 
+## `Requisitos` 
 Realizar la interacción con la aplicación en modo consola.  
 Tener en cuenta la gestión correcta de excepciones. 
 Continuar utilizando el sistema de control de versiones Git. 
@@ -40,7 +39,7 @@ Para llevar a cabo la actividad puedes apoyarte en los materiales y fuentes de i
 La puntuación máxima del producto es un 20.  
 La puntuación mínima para superarlo es de 10 sobre 20. 
 
-## Indicaciones para la entrega de la actividad
+## `Indicaciones para la entrega de la actividad`
 Hacerlo por el canal indicado en el aula virtual. 
 Formato: zip o rar, en el contenido se deberá incluir el documento PDF con la resolución de los ejercicios y los ficheros del programa en java así como el resto de ficheros relacionados en este producto. 
 Nombre del archivo: producto3(FP206)_Apellido1Apellido2_Nombre 
