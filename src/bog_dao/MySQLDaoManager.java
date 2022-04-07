@@ -5,10 +5,10 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class MySQLDaoManager {
-    private Connection con;
+    private Connection conn;
 
-    public MySQLDaoManager(String host, String username, String password, String database) throws SQLException {
-        this.con = DriverManager.getConnection("jdbc:mysql://" + host + "/" + database, username, password);
+    public MySQLDaoManager() throws SQLException {
+        this.conn = DriverManager.getConnection("jdbc:mysql://localhost/P5_Prod3_BOG", "bog", "bog");
     }
 
 }

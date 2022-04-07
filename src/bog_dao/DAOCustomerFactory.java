@@ -8,7 +8,7 @@ public class DAOCustomerFactory implements IDAOFactory<Customer, String>{
 
     @Override
     public IDAO<Customer, String> createDAO() {
-        return new SQLCustomerDAO();
+        return new MySQLCustomerDAO();
     }
     
 }
