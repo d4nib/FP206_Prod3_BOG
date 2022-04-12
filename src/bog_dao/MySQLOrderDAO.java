@@ -16,12 +16,20 @@
 
 package bog_dao;
 
+import java.sql.Connection;
 import java.util.ArrayList;
 
 import bog_models.Order;
 
 public class MySQLOrderDAO implements OrderDAO {
 
+    private Connection connection;
+
+    public MySQLOrderDAO(Connection con){
+        this.connection = con;
+    }
+
+    
     @Override
     public void create(Order insertado) throws DAOException {
         // TODO Auto-generated method stub

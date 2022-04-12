@@ -1,8 +1,9 @@
 
 package bog_dao;
 
+import java.sql.Connection;
 
-public interface IDAOFactory<T, K> {
+public interface IDAOFactory<T> {
     
-    public abstract IDAO<T,K> createDAO();
+    public abstract T createDAO(Connection con);
 }

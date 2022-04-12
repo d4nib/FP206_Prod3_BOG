@@ -16,10 +16,16 @@
 
 package bog_dao;
 
+import java.sql.Connection;
 import java.util.ArrayList;
 import bog_models.Customer;
 
 public class MySQLCustomerDAO implements CustomerDAO{
+    private Connection connection;
+
+    public MySQLCustomerDAO(Connection con) {
+        this.connection = con;
+    }
 
     @Override
     public void create(Customer insertado) {
