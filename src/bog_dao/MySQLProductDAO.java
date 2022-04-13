@@ -21,83 +21,173 @@ import java.util.ArrayList;
 
 public class MySQLProductDAO implements ProductDAO{
     //Los ? son para luego el PreparedStatement
-    final String INSERT = "INSERT INTO Producto( productName, description, price, shippingFee) VALUES( ?, ?, ?, ?)";
-    final String UPDATE = "UPDATE Producto SET nombre = ?, apellidos = ?, fecha_nac = ? WHERE id_alumno = ?";
-    final String DELETE = "DELETE FROM Producto WHERE id_alumno = ?";
-    final String GETALL = "SELECT id_alumno, nombre, apellidos, decha_nac FROM alumnos";
-    final String GETONE = "SELECT id_alumno, nombre, apellidos, decha_nac WHERE id_alumnos = ?";
+    final String INSERT = "INSERT INTO Producto (productID, productName, description, price, shippingFee, handlingTime) VALUES( ?, ?, ?, ?)";
+    final String UPDATE = "UPDATE Producto SET productID = ?, productName = ?, description = ?, price = ?, shippingFee = ?, handlingTime = ?, WHERE productID = ?";
+    final String DELETE = "DELETE FROM Producto WHERE productID = ?";
+    final String GETALL = "SELECT productID, productName, description, price, shippingFee, handlingTime FROM products";
+    final String GETONE = "SELECT productID, productName, description, price, shippingFee, handlingTime WHERE productID = ?";
     
-    private Connection connection;
+    private final Connection conn;
     
     public MySQLProductDAO(Connection conn) {
-        this.connection = conn; 
+        this.conn=conn; 
     }
     
     @Override
-    public void create(Product p) throws DAOException{
-        PreparedStatement stat = null;
-        ResultSet rs = null;
-
+    public void create(Product insertado) throws DAOException{
+PreparedStatement stat = null;
         try {
-            stat = connection.prepareStatement(INSERT); 
-            //stat.setString(1, i.getProductID()); //Utilizamos los metodos set para convertir de los datos java a sql. El indice representa la posicion de los interrogantes
-            //Hay que poner todos los atributos del Product en el indice que toque de la tabla
-            
-            if(stat.executeUpdate() == 0){
-                throw new DAOException("No se ha guardado");
-            }
-
-            rs = stat.getGeneratedKeys();
-            if(rs.next()){
-                p.setproductID(rs.getString(1));
-            }else{
-                throw new DAOException("No se ha podido asignar ID al alumno.");
-            }
-        } 
-        catch (SQLException e) {
-            throw new DAOException("Error en SQL", e);
+            stat = conn.prepareStatement(INSERT);
+            stat.setString(1, insertado.getproductID());
+            stat.setString(2, insertado.getProductName());
+            stat.setString(3, insertado.getDescription());
+            stat.setDouble(4, insertado.getPrice());
+            stat.setDouble(5, insertado.getShippingFee());
+            stat.setInt(6, insertado.gethandlingTime());
+            if (stat.executeUpdate() ==0){
+                throw new DAOException("Puede que el producto no se haya guardado");
         }
-        finally{
-            if(rs != null){
+        } catch (SQLException ex) {
+            throw new DAOException("Error en SQL", ex);
+        } finally {
+            if (stat != null){
                 try {
-                    rs.close();
-                } catch (SQLException e) {
-                    throw new DAOException("Error en SQL", e);                
-                }
-            }
-            if(stat != null){
-                try{
                     stat.close();
-                } catch(SQLException e){
-                    throw new DAOException("Error en SQL", e);
+                }catch (SQLException ex){
+                    throw new DAOException ("Error en SQL", ex);
                 }
             }
-        }
+        }   
     }
+    
+    private Product convertir(ResultSet rs) throws SQLException{
+        String productID = rs.getString("productID");
+        String productName = rs.getString("productName");
+        String description = rs.getString("description");
+        Double price = rs.getDouble("price");
+        Double shippingFee = rs.getDouble("shippingFee");
+        int handlingTime = rs.getInt("handlingTime");
+        Product product = new Product (productID, productName, description, price, shippingFee, handlingTime);
+        return product;  
+        }
     
   @Override
     public Product readOne(String id) throws DAOException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+ PreparedStatement stat = null;
+        ResultSet rs = null;
+        Product producto = null;
+        try{
+            stat = conn.prepareStatement(GETONE);
+            stat.setString(1, id);
+            rs = stat.executeQuery();
+            if (rs.next()){
+                producto = convertir(rs);
+            } else{
+                throw new DAOException("No se ha encontrado este pedido");
+        }
+    }catch (SQLException ex){
+        throw new DAOException ("Error en SQL", ex);
+    } finally {
+            if(rs != null){
+                try{
+                    rs.close();
+                } catch(SQLException ex){
+                    new DAOException ("Error en SQL", ex);
+            }
+        }
+            if (stat != null) {
+                try {
+                    stat.close();
+                } catch (SQLException ex) {
+                    new DAOException("Error en SQL", ex);
+                }
+            }
+    }
+    return producto;    
     }
 
     @Override
     public ArrayList<Product> readAll() throws DAOException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+       PreparedStatement stat = null;
+        ResultSet rs = null;
+        ArrayList<Product> products = new ArrayList<>();
+        try {
+            stat = conn.prepareStatement(GETALL);
+            rs = stat.executeQuery();
+            while (rs.next()){
+                products.add(convertir(rs));
+            }
+        } catch (SQLException ex) {
+            throw new DAOException("Error en SQL", ex);
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException ex) {
+                    new DAOException("Error en SQL", ex);
+                }
+            } 
+            if (stat != null) {
+                try{
+                    stat.close();
+                }catch (SQLException ex){
+                    new DAOException("Error en SQL", ex);
+                }
+            }
+        }
+        return products;    }
     
     @Override
-    public void update(Product modificado) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    public void update(Product modificado) throws DAOException{
+  PreparedStatement stat=null;
+        try{
+            stat = conn.prepareStatement(UPDATE);
+            stat.setString(1, modificado.getproductID());
+            stat.setString(2, modificado.getProductName());
+            stat.setString(3, modificado.getDescription());
+            stat.setDouble(5, modificado.getPrice());
+            stat.setDouble(6, modificado.getShippingFee());
+            stat.setInt(7,modificado.gethandlingTime());
+
+            if (stat.executeUpdate() ==0){
+                throw new DAOException("Puede que el producto no se haya guardado");
+        }
+        } catch (SQLException ex){
+            throw new DAOException ("Error de SQL", ex);
+        } finally {
+           if (stat !=null){
+           try{
+           stat.close();
+           }catch (SQLException ex) {
+               throw new DAOException ("Error de SQL", ex);
+                }    
+           }
+        }     }
 
     @Override
-    public void delete(Product eliminado) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    public void delete(Product eliminado) throws DAOException {
+        PreparedStatement stat = null;
+        try{
+            stat = conn.prepareStatement(DELETE);
+            stat.setString(1, eliminado.getproductID());
+            if (stat.executeUpdate() ==0) {
+                throw new DAOException ("Puede que el producto no se haya eliminado");
+            }
+            } catch (SQLException ex){
+                throw new DAOException ("Error de SQL", ex);
+            } finally {
+                if (stat != null){
+                    try{
+                        stat.close();
+                    }catch (SQLException ex){
+                        throw new DAOException("Error de SQL", ex);
+                    }
+                }
+            }
+    
+            
+    }    
 
-    private Product convertir(ResultSet rs){
-        return null;
-        //https://www.youtube.com/watch?v=q8EdOcTcRsM&ab_channel=makigas%3Atutorialesdeprogramaci%C3%B3n
-    }
+    
     
 }
