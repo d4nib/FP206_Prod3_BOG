@@ -16,7 +16,11 @@
 
 package bog_dao;
 
+<<<<<<< HEAD
 import bog_models.Customer;
+=======
+import java.sql.Connection;
+>>>>>>> Joan
 import java.util.ArrayList;
 import bog_models.Order;
 import bog_models.Product;
@@ -35,10 +39,19 @@ public class MySQLOrderDAO implements OrderDAO {
     final String GETALL = "SELECT orderID, productID, customerEmail, productQuantity, subtotal, creationDateTime, handlingTime, isSent FROM orders";
     final String GETONE = "SELECT orderID, productID, customerEmail, productQuantity, subtotal, creationDateTime, handlingTime, isSent FROM orders WHERE orderID = ?";
 
+<<<<<<< HEAD
     private Connection conn;
     
     public MySQLOrderDAO(Connection conn){
         this.conn=conn;}
+=======
+    private Connection connection;
+
+    public MySQLOrderDAO(Connection con){
+        this.connection = con;
+    }
+
+>>>>>>> Joan
     
     @Override
     public void create(Order insertado) throws DAOException {

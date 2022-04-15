@@ -16,6 +16,7 @@
 
 package bog_dao;
 
+import java.sql.Connection;
 import java.util.ArrayList;
 import bog_models.Customer;
 import bog_models.CustomerType;
@@ -26,6 +27,7 @@ import java.sql.*;
 
 
 public class MySQLCustomerDAO implements CustomerDAO{
+<<<<<<< HEAD
     
     final String INSERT = "INSERT INTO customers(email, firstname, lastname, address, idCardNumber, customerFee, customerDiscount, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     final String UPDATE = "UPDATE customers SET email = ?, firstname = ?, address = ?, idCardNumber = ?, customerFee = ?, customerDiscount = ?, type = ?";
@@ -37,6 +39,13 @@ public class MySQLCustomerDAO implements CustomerDAO{
     
     public MySQLCustomerDAO(Connection conn){
         this.conn=conn;}
+=======
+    private Connection connection;
+
+    public MySQLCustomerDAO(Connection con) {
+        this.connection = con;
+    }
+>>>>>>> Joan
 
     @Override
     public void create(Customer insertado) throws DAOException{
