@@ -16,12 +16,11 @@
 
 package bog_dao;
 
-<<<<<<< HEAD
 import bog_models.Customer;
-=======
-import java.sql.Connection;
->>>>>>> Joan
 import java.util.ArrayList;
+
+import bog_controllers.CustomersController;
+import bog_controllers.ProductsController;
 import bog_models.Order;
 import bog_models.Product;
 import java.sql.Connection;
@@ -39,19 +38,12 @@ public class MySQLOrderDAO implements OrderDAO {
     final String GETALL = "SELECT orderID, productID, customerEmail, productQuantity, subtotal, creationDateTime, handlingTime, isSent FROM orders";
     final String GETONE = "SELECT orderID, productID, customerEmail, productQuantity, subtotal, creationDateTime, handlingTime, isSent FROM orders WHERE orderID = ?";
 
-<<<<<<< HEAD
+
     private Connection conn;
     
     public MySQLOrderDAO(Connection conn){
         this.conn=conn;}
-=======
-    private Connection connection;
 
-    public MySQLOrderDAO(Connection con){
-        this.connection = con;
-    }
-
->>>>>>> Joan
     
     @Override
     public void create(Order insertado) throws DAOException {
@@ -83,15 +75,18 @@ public class MySQLOrderDAO implements OrderDAO {
     }
     
         private Order convertir(ResultSet rs) throws SQLException{
-        Product product = Product.valueOf(rs.getString("productID"));
+        // Product product = Product.valueOf(rs.getString("productID"));
+        ProductsController pc = null;  // ESTO NO SIRVE
         String productID = rs.getString("productID");
-        Customer customer = Customer.valueOf(rs.getString("customerEmail"));
+        // Customer customer = Customer.getCustomer(rs.getString("customerEmail"));
+        CustomersController cc = null;
+        String customerEmail = rs.getString("customerEmail");
         int productQuantity = rs.getInt("productQuantity");
         Double subtotal = rs.getDouble("subtotal");
         LocalDateTime creationDataTime =  rs.getTimestamp(6).toLocalDateTime();
         int handlingTime = rs.getInt("handlingTime");
         Boolean isSent=rs.getBoolean("isSent");
-        Order order = new Order (product, customer, productQuantity);
+        Order order = new Order (pc.returnProduct(productID), cc.returnCustomer(customerEmail), productQuantity);
         return order;  
         }
 

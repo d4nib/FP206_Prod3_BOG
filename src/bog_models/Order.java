@@ -34,6 +34,8 @@ public class Order {
         this.handlingTime = 2;
 
     }
+        
+
     // Generador de Order ID
     public static int orderIdGenerator(){
         orderIDnumber++;
