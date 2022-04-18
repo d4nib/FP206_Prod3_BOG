@@ -2,6 +2,7 @@ package bog_controllers;
 
 import java.util.ArrayList;
 
+import bog_dao.DAOException;
 import bog_models.Product;
 import bog_models.Data;
 import bog_views.ProductsView;
@@ -35,7 +36,7 @@ public class ProductsController {
   }
 
   // Delete
-  public void delete(Product product) {
+  public void delete(Product product) throws DAOException {
     this.dataStore.deleteProduct(product);
   }
 

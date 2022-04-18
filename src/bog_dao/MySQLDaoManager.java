@@ -17,11 +17,15 @@ public class MySQLDaoManager implements IDaoManager {
 
 
     public MySQLDaoManager() throws SQLException {
-        this.con = DriverManager.getConnection("jdbc:mysql://localhost/P5_Prod3_BOG", "bog", "bog");
-
+        this.con = DriverManager.getConnection("jdbc:mysql://localhost:3306/P5_Prod3_BOG", "bog", "bog");
         daoProductFactory = new MySQLDaoProductFactory();
         daoCustomerFactory = new MySQLDaoCustomerFactory();
         daoOrderFactory = new MySQLDaoOrderFactory();
+    }
+
+        // Retorno de conexión a la B
+    public Connection returnConn(){
+        return this.con;
     }
 
     @Override

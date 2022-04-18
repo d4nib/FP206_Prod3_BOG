@@ -1,11 +1,13 @@
 package bog_views;
 
 
+import java.sql.SQLException;
 import java.util.Scanner;
 
 import bog_controllers.CustomersController;
 import bog_controllers.OrdersController;
 import bog_controllers.ProductsController;
+import bog_dao.DAOException;
 import bog_models.Customer;
 import bog_models.CustomerType;
 import bog_models.Data;
@@ -18,7 +20,7 @@ public class GestionOS {
   private OrdersController ordersController;
   private ProductsController productsController;
 
-  public GestionOS() {
+  public GestionOS() throws DAOException, SQLException {
     this.dataStore = new Data();
     this.customersController = new CustomersController(this.dataStore);
     this.productsController = new ProductsController(this.dataStore);
@@ -120,7 +122,7 @@ public class GestionOS {
     else {ordersController.list();}
   }
 
-  public void deleteOrder(Scanner scanner) {
+  public void deleteOrder(Scanner scanner) throws DAOException {
     Order order;
     System.out.print("Order ID: ");
     int orderId = scanner.nextInt(); 

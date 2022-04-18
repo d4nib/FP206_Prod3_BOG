@@ -2,7 +2,7 @@ package bog_controllers;
 
 import java.util.ArrayList;
 
-
+import bog_dao.DAOException;
 import bog_models.Customer;
 import bog_models.Data;
 import bog_views.CustomersView;
@@ -49,7 +49,7 @@ public class CustomersController {
   }
 
   // Delete
-  public void delete(Customer customer) {
+  public void delete(Customer customer) throws DAOException {
     this.dataStore.deleteCustomer(customer);
   }
 

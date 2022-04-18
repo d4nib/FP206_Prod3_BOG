@@ -51,8 +51,8 @@ public class MySQLOrderDAO implements OrderDAO {
         try {
             stat = conn.prepareStatement(INSERT);
             stat.setInt(1, insertado.getorderID());
-            stat.setString(2, insertado.getProduct().toString());
-            stat.setString(3, insertado.getCustomer().toString());
+            stat.setString(2, insertado.getProduct().getproductID());
+            stat.setString(3, insertado.getCustomer().getEmail());
             stat.setInt(4, insertado.getproductQuantity());
             stat.setDouble(5, insertado.getSubtotal());
             stat.setString(6, insertado.getcreationDataTime().toString());

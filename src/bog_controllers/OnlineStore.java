@@ -3,13 +3,12 @@ package bog_controllers;
 import java.util.Scanner;
 
 import bog_models.CustomerType;
-
 import static java.lang.System.exit;
 
 import bog_views.GestionOS;
 
-public class OnlineStore {
-    private static GestionOS gestionOS = new GestionOS();
+public class OnlineStore  { 
+    private static GestionOS gestionOS;
 
     public static void printMenu(String[] options) {
         System.out.println("");
@@ -21,7 +20,9 @@ public class OnlineStore {
         System.out.println("");
     }
 
+
     public static void main(String[] args) throws Exception {
+        gestionOS = new GestionOS();
 
         // Show menu
         String[] options = {
