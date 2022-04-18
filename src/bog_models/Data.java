@@ -18,11 +18,12 @@ public class Data {
         this.mySQLDaoManager = new MySQLDaoManager(); 
         this.customers = mySQLDaoManager.getCustomerDAO().readAll();
         this.products = mySQLDaoManager.getProductDAO().readAll();
-        this.orders = mySQLDaoManager.getOrderDAO().readAll();
-
-
+        //this.orders = mySQLDaoManager.getOrderDAO().readAll();
+        
+        // cargarDatos();
     }
    
+    
     
     // Customer data functions ******************************************************************
     public ArrayList<Customer> getCustomers() {
@@ -51,14 +52,22 @@ public class Data {
 
     public void addCustomer(Customer customer) throws Exception {
         try {
-            this.mySQLDaoManager.getCustomerDAO().create(customer); ;
+            this.mySQLDaoManager.getCustomerDAO().create(customer); 
+            this.customers.add(customer); // Actualización de Customers.
         } catch (Exception e) {
             throw e;
         }
     }
 
     public boolean existsCustomer(String email){
-        return this.customers.contains(email);
+        boolean ret = false; 
+        for (int i=0; i < this.customers.size(); i++){
+            if (email.equals(this.customers.get(i).getEmail())){
+                ret = true;
+            }
+        }
+       
+        return ret;
     }
     
     public int lenghtCustomer(){
@@ -76,7 +85,7 @@ public class Data {
 
     public void addProduct(Product product) throws Exception {
         try {
-            this.products.add(product);
+            this.mySQLDaoManager.getProductDAO().create(product);
         } catch (Exception e) {
             throw e;
         }
@@ -136,45 +145,41 @@ public class Data {
 
 
 
-   
 
-}
+    //private void cargarDatos(){
+        // Customer customer = new Customer("Paco", "Saiz", "psaiz@gmail.com", "C/Toledo 178", "12345678A", CustomerType.REGULAR);
+        // try {
+            
+        //     addCustomer(customer);
+        //     customer = new Customer("Jose", "Perez", "jper3z@gmail.com", "C/desesperao 78", "19835648S", CustomerType.REGULAR);
+        //     addCustomer(customer);
+        //     customer = new Customer("Maria", "Hernandez", "mariahernan@gmail.com", "Av.Balcao 197", "36184656Y", CustomerType.PREMIUM);
+        //     addCustomer(customer);
+        //     customer = new Customer("Sara", "Cabrer", "tupacsacura@gmail.com", "C/Verano 2", "97385673U", CustomerType.PREMIUM);
+        //     addCustomer(customer);
+        //     customer = new Customer("Samuel", "Bolivar", "samusitoBol@gmail.com", "C/Colorado 34", "92648762F", CustomerType.REGULAR);
+        //     addCustomer(customer);
+        // } catch (Exception e) {
+            
+        // }
 
-
- // private void cargarDatos(){
-    //     Customer customer = new Customer("Paco", "Saiz", "psaiz@gmail.com", "C/Toledo 178", "12345678A", CustomerType.REGULAR);
-    //     try {
+        // Product product = new Product("001A", "Aspirador TORIEL ", "La aspiradora capaz de limpiar la casa despues de una fiesta de fraternidad", 29, 1.4, 2);
+        // try {
+        //     addProduct(product);
+        //     product = new Product("002A", "Aspirador TORIEL mini", "La aspiradora de mano capaz de limpiar el macdonald despues de un buffet libre", 20, 2, 2);
+        //     addProduct(product);
+        //     product = new Product("003A", "Cascos wireless SAMUSNG Azules", "Cascos marca SAMUSNG de color azul sin cable con cargador incluido", 46, 3.4, 1);
+        //     addProduct(product);
+        //     product = new Product("004A", "Reloj mecanico MANLESS", "Reloj de muñeca mecanico dorado con agujas de plata cristalizada y cristal templado resistente a todo tipo de golpe", 54.9, 5, 4);
+        //     addProduct(product);
+        //     product = new Product("005A", "Deportivas NIKE bump fresh 4", "Deportivas NIKE de color negras y rojas, Sirven para caminar mas rapido, creo", 60.9, 2.5, 2);
+        //     addProduct(product);
+        //     product = new Product("006A", "Gorra NEW ERA New York classic 1976", "Una de las gorras clasicas de la compañia NEW ERA. La primera New York que salio", 75.9, 4, 5);
+        //     addProduct(product);
             
-    //         mySQLCustomerDAO.create(customer);
-    //         customer = new Customer("Jose", "Perez", "jper3z@gmail.com", "C/desesperao 78", "19835648S", CustomerType.REGULAR);
-    //         mySQLCustomerDAO.create(customer);
-    //         customer = new Customer("Maria", "Hernandez", "mariahernan@gmail.com", "Av.Balcao 197", "36184656Y", CustomerType.PREMIUM);
-    //         mySQLCustomerDAO.create(customer);
-    //         customer = new Customer("Sara", "Cabrer", "tupacsacura@gmail.com", "C/Verano 2", "97385673U", CustomerType.PREMIUM);
-    //         mySQLCustomerDAO.create(customer);
-    //         customer = new Customer("Samuel", "Bolivar", "samusitoBol@gmail.com", "C/Colorado 34", "92648762F", CustomerType.REGULAR);
-    //         mySQLCustomerDAO.create(customer);
-    //     } catch (Exception e) {
+        // } catch (Exception e) {
             
-    //     }
-
-    //     Product product = new Product("001A", "Aspirador TORIEL ", "La aspiradora capaz de limpiar la casa despues de una fiesta de fraternidad", 29d, 1.4d, 2);
-    //     try {
-    //         products.add(product);
-    //         product = new Product("002A", "Aspirador TORIEL mini", "La aspiradora de mano capaz de limpiar el macdonald despues de un buffet libre", 20d, 2d, 2);
-    //         products.add(product);
-    //         product = new Product("003A", "Cascos wireless SAMUSNG Azules", "Cascos marca SAMUSNG de color azul sin cable con cargador incluido", 46d, 3.4d, 1);
-    //         products.add(product);
-    //         product = new Product("004A", "Reloj mecanico MANLESS", "Reloj de muñeca mecanico dorado con agujas de plata cristalizada y cristal templado resistente a todo tipo de golpe", 54.9d, 5d, 4);
-    //         products.add(product);
-    //         product = new Product("005A", "Deportivas NIKE bump fresh 4", "Deportivas NIKE de color negras y rojas, Sirven para caminar mas rapido, creo", 60.9d, 2.5d, 2);
-    //         products.add(product);
-    //         product = new Product("006A", "Gorra NEW ERA New York classic 1976", "Una de las gorras clasicas de la compañia NEW ERA. La primera New York que salio", 75.9d, 4d, 5);
-    //         products.add(product);
-            
-    //     } catch (Exception e) {
-            
-    //     }
+        //}
         // Order order = new Order(products.getAt(0), customers.getAt(0), 1);
         // try {
         //     orders.add(order);
@@ -192,4 +197,11 @@ public class Data {
         // } catch (Exception e) {
             
         // }
-    //}
+}
+   
+
+
+
+
+
+ 

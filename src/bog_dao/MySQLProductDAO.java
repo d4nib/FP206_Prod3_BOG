@@ -21,10 +21,10 @@ import java.util.ArrayList;
 
 public class MySQLProductDAO implements ProductDAO{
     //Los ? son para luego el PreparedStatement
-    final String INSERT = "INSERT INTO Producto (productID, productName, description, price, shippingFee, handlingTime) VALUES( ?, ?, ?, ?)";
-    final String UPDATE = "UPDATE Producto SET productID = ?, productName = ?, description = ?, price = ?, shippingFee = ?, handlingTime = ?, WHERE productID = ?";
-    final String DELETE = "DELETE FROM Producto WHERE productID = ?";
-    final String GETALL = "SELECT productID, productName, description, price, shippingFee, handlingTime FROM products";
+    final String INSERT = "INSERT INTO products VALUES( ?, ?, ?, ?, ?, ?);";
+    final String UPDATE = "UPDATE products SET productID = ?, productName = ?, description = ?, price = ?, shippingFee = ?, handlingTime = ?, WHERE productID = ?";
+    final String DELETE = "DELETE FROM products WHERE productID = ?";
+    final String GETALL = "SELECT * FROM products";
     final String GETONE = "SELECT productID, productName, description, price, shippingFee, handlingTime WHERE productID = ?";
     
     private final Connection conn;
@@ -35,7 +35,7 @@ public class MySQLProductDAO implements ProductDAO{
     
     @Override
     public void create(Product insertado) throws DAOException{
-PreparedStatement stat = null;
+        PreparedStatement stat = null;
         try {
             stat = conn.prepareStatement(INSERT);
             stat.setString(1, insertado.getproductID());
@@ -61,12 +61,12 @@ PreparedStatement stat = null;
     }
     
     private Product convertir(ResultSet rs) throws SQLException{
-        String productID = rs.getString("productID");
-        String productName = rs.getString("productName");
-        String description = rs.getString("description");
-        Double price = rs.getDouble("price");
-        Double shippingFee = rs.getDouble("shippingFee");
-        int handlingTime = rs.getInt("handlingTime");
+        String productID = rs.getString(1);
+        String productName = rs.getString(2);
+        String description = rs.getString(3);
+        Double price = rs.getDouble(4);
+        Double shippingFee = rs.getDouble(5);
+        int handlingTime = rs.getInt(6);
         Product product = new Product (productID, productName, description, price, shippingFee, handlingTime);
         return product;  
         }
@@ -110,7 +110,7 @@ PreparedStatement stat = null;
     public ArrayList<Product> readAll() throws DAOException {
        PreparedStatement stat = null;
         ResultSet rs = null;
-        ArrayList<Product> products = new ArrayList<>();
+        ArrayList<Product> products = new ArrayList<Product>();
         try {
             stat = conn.prepareStatement(GETALL);
             rs = stat.executeQuery();
