@@ -25,12 +25,12 @@ public class Order {
 
     // CONSTRUCTOR
     public Order(Product product, Customer customer, int productQuantity) {
-        this.orderID = orderIdGenerator();
+        this.orderID = 0;
         this.product = product;
         this.customer = customer;
         this.productQuantity = productQuantity;
         this.subtotal = this.product.getPrice() * productQuantity;
-        this.creationDataTime = LocalDateTime.now();
+        this.creationDataTime = null;
         this.handlingTime = 2;
 
     }

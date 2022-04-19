@@ -16,23 +16,22 @@
 
 package bog_dao;
 
-import bog_models.Customer;
-import java.util.ArrayList;
 
-import bog_controllers.CustomersController;
-import bog_controllers.ProductsController;
-import bog_models.Order;
-import bog_models.Product;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.*;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+
+import bog_models.Customer;
+import bog_models.Order;
+import bog_models.Product;
+
 
 
 public class MySQLOrderDAO implements OrderDAO {
     
-    final String INSERT = "INSERT INTO orders (orderID, productID, customerEmail, productQuantity, subtotal, creationDateTime, handlingTime, isSent) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    final String INSERT = "INSERT INTO orders VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     final String UPDATE = "UPDATE orders SET orderID = ?, productID = ?, customerEmail = ?, productQuantity = ?, subtotal = ?, creationDateTime = ?, handlingTime = ?, isSent = ?";
     final String DELETE = "DELETE FROM orders WHERE orderID = ?";
     final String GETALL = "SELECT orderID, productID, customerEmail, productQuantity, subtotal, creationDateTime, handlingTime, isSent FROM orders";
@@ -50,7 +49,7 @@ public class MySQLOrderDAO implements OrderDAO {
     PreparedStatement stat = null;
         try {
             stat = conn.prepareStatement(INSERT);
-            stat.setInt(1, insertado.getorderID());
+            stat.setInt(1, 0);
             stat.setString(2, insertado.getProduct().getproductID());
             stat.setString(3, insertado.getCustomer().getEmail());
             stat.setInt(4, insertado.getproductQuantity());
@@ -75,19 +74,19 @@ public class MySQLOrderDAO implements OrderDAO {
     }
     
         private Order convertir(ResultSet rs) throws SQLException{
-        // Product product = Product.valueOf(rs.getString("productID"));
-        ProductsController pc = null;  // ESTO NO SIRVE
-        String productID = rs.getString("productID");
-        // Customer customer = Customer.getCustomer(rs.getString("customerEmail"));
-        CustomersController cc = null;
-        String customerEmail = rs.getString("customerEmail");
-        int productQuantity = rs.getInt("productQuantity");
-        Double subtotal = rs.getDouble("subtotal");
-        LocalDateTime creationDataTime =  rs.getTimestamp(6).toLocalDateTime();
-        int handlingTime = rs.getInt("handlingTime");
-        Boolean isSent=rs.getBoolean("isSent");
-        Order order = new Order (pc.returnProduct(productID), cc.returnCustomer(customerEmail), productQuantity);
-        return order;  
+            String productID = rs.getString("productID");
+            String customerEmail = rs.getString("customerEmail");
+            int productQuantity = rs.getInt("productQuantity");
+            //Double subtotal = rs.getDouble("subtotal");
+            //LocalDateTime creationDataTime =  rs.getTimestamp(6).toLocalDateTime();
+            //int handlingTime = rs.getInt("handlingTime");
+            //Boolean isSent=rs.getBoolean("isSent");
+
+            Product product = null;
+            Customer customer = null;
+
+            Order order = new Order (product, customer, productQuantity);
+            return order; 
         }
 
     @Override
