@@ -31,7 +31,7 @@ import bog_models.Order;
 
 public class MySQLOrderDAO implements OrderDAO {
     
-    final String INSERT = "INSERT INTO orders (productID , customerEmail, productQuantity, subtotal, creationDateTIme, hadnlingTime ) VALUES (?, ?, ?, ?, ?, ?);";
+    final String INSERT = "INSERT INTO orders (productID , customerEmail, productQuantity, subtotal, creationDateTIme, handlingTime ) VALUES (?, ?, ?, ?, ?, ?);";
     final String UPDATE = "UPDATE orders SET orderID = ?, productID = ?, customerEmail = ?, productQuantity = ?, subtotal = ?, creationDateTime = ?, handlingTime = ?, isSent = ?";
     final String DELETE = "DELETE FROM orders WHERE orderID = ?";
     final String GETALL = "SELECT * FROM orders";
