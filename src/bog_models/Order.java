@@ -3,10 +3,7 @@ package bog_models;
 
 import java.time.LocalDateTime;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
-import org.junit.Test;
 
 
 
@@ -15,8 +12,8 @@ import org.junit.Test;
 public class Order {
     public static int orderIDnumber;
     private int orderID;
-    private Product product;
-    private Customer customer;
+    private String productID;
+    private String customerEmail;
     private int productQuantity;
     private double subtotal;
     private LocalDateTime creationDataTime;
@@ -24,23 +21,22 @@ public class Order {
     private boolean isSent;
 
     // CONSTRUCTOR
-    public Order(Product product, Customer customer, int productQuantity) {
-        this.orderID = 0;
-        this.product = product;
-        this.customer = customer;
-        this.productQuantity = productQuantity;
-        this.subtotal = this.product.getPrice() * productQuantity;
-        this.creationDataTime = null;
-        this.handlingTime = 2;
+    public Order(String productID, String customerEmail, int productQuantity, double subtotal, int hadlingTime) {
+        this.productID = productID;
+        this.customerEmail = customerEmail;
+        this.productQuantity = productQuantity; 
+        this.subtotal = subtotal;
+        this.handlingTime = hadlingTime;
+        this.creationDataTime = LocalDateTime.now();
 
     }
         
 
-    // Generador de Order ID
-    public static int orderIdGenerator(){
-        orderIDnumber++;
-        return orderIDnumber;
-    }
+    // // Generador de Order ID
+    // public static int orderIdGenerator(){
+    //     orderIDnumber++;
+    //     return orderIDnumber;
+    // }
     
     // CHECKERS - Comprueban las políticas de negocio y calculan resultados
     public boolean isCancellable() {
@@ -48,34 +44,27 @@ public class Order {
         return !isSent; // Si esta enviado, no se puede cancelar. Así de simple
     }
 
-    public boolean clientExists() {
 
-        return false;
-    }
+    // public double calculateShipping() {
+    //     final double customerDiscount = this.customerEmail.getCustomerDiscount() / 100;
+    //     final double discount = customerDiscount > 0 ? productID.getShippingFee() * customerDiscount : productID.getShippingFee();
+    //     final double shippingWithDiscount = productID.getShippingFee() - discount;
+    //     return shippingWithDiscount;
+    // }
 
-    public double calculateShipping() {
-        final double customerDiscount = this.customer.getCustomerDiscount() / 100;
-        final double discount = customerDiscount > 0 ? product.getShippingFee() * customerDiscount : product.getShippingFee();
-        final double shippingWithDiscount = product.getShippingFee() - discount;
-        return shippingWithDiscount;
-    }
+    // @Test
+    // public void testCalculateShipping(){ //Para que esto funcione debemos pasar el producto 002A y un costumer.Premium.
+    //     assertEquals(1.6d, calculateShipping(), 0.01); //El 0.001 es el margen de error que tienen los float
+    // }
 
-    @Test
-    public void testCalculateShipping(){ //Para que esto funcione debemos pasar el producto 002A y un costumer.Premium.
-        assertEquals(1.6d, calculateShipping(), 0.01); //El 0.001 es el margen de error que tienen los float
-    }
+    // public double calculateOrderTotal() {
+    //     final double productPrice = this.productQuantity * this.productID.getPrice();
+    //     final double shipping = calculateShipping();
+    //     final double orderTotal = productPrice + shipping;
+    //     return orderTotal;
+    // }
 
-    public double calculateOrderTotal() {
-        final double productPrice = this.productQuantity * this.product.getPrice();
-        final double shipping = calculateShipping();
-        final double orderTotal = productPrice + shipping;
-        return orderTotal;
-    }
-
-    @Test
-    public void testCalculateOrderTotal(){ // Este seria el segundo order de la lista de Data. Producto 002A y cliente Premium
-        assertEquals( 41.6, calculateOrderTotal(), 0.01);
-    }
+   
 
     public boolean orderSent() {
         // Creamos la fecha en la que el pedido estará lista
@@ -91,10 +80,7 @@ public class Order {
         return isSent;
     }
 
-    @Test
-    public void testOrderSent(){
-        assertTrue(orderSent()); //Esto deberia ser siempre true en el momento que lo probamos
-    }
+    
     
     // GETTERS & SETTERS
 
@@ -106,20 +92,20 @@ public class Order {
         this.orderID = orderID;
     }
 
-    public Product getProduct() {
-        return product;
+    public String getProductID() {
+        return productID;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setProductID(String product) {
+        this.productID = product;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public String getCustomerEmail() {
+        return customerEmail;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public void setCustomer(String customer) {
+        this.customerEmail = customer;
     }
 
     public int getproductQuantity() {
@@ -154,11 +140,22 @@ public class Order {
         this.handlingTime = handlingTime;
     }
 
+
+    public boolean isSent() {
+        return isSent;
+    }
+
+
+    public void setSent(boolean isSent) {
+        this.isSent = isSent;
+    }
+
+
     @Override
     public String toString() {
-        return "Order [creationDataTime=" + creationDataTime + ", customer=" + customer + ", handlingTime="
+        return "Order [creationDataTime=" + creationDataTime + ", customer=" + customerEmail + ", handlingTime="
                 + handlingTime + ", product="
-                + product + ", productQuantity=" + productQuantity + ", orderID="
+                + productID + ", productQuantity=" + productQuantity + ", orderID="
                 + orderID
                 + ", subtotal=" + subtotal + "]";
     }

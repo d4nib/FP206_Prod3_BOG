@@ -23,15 +23,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import bog_models.Customer;
+
 import bog_models.Order;
-import bog_models.Product;
+
 
 
 
 public class MySQLOrderDAO implements OrderDAO {
     
-    final String INSERT = "INSERT INTO orders VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    final String INSERT = "INSERT INTO orders (productID , customerEmail, productQuantity) VALUES (?, ?, ?);";
     final String UPDATE = "UPDATE orders SET orderID = ?, productID = ?, customerEmail = ?, productQuantity = ?, subtotal = ?, creationDateTime = ?, handlingTime = ?, isSent = ?";
     final String DELETE = "DELETE FROM orders WHERE orderID = ?";
     final String GETALL = "SELECT orderID, productID, customerEmail, productQuantity, subtotal, creationDateTime, handlingTime, isSent FROM orders";
@@ -49,14 +49,14 @@ public class MySQLOrderDAO implements OrderDAO {
     PreparedStatement stat = null;
         try {
             stat = conn.prepareStatement(INSERT);
-            stat.setInt(1, 0);
-            stat.setString(2, insertado.getProduct().getproductID());
-            stat.setString(3, insertado.getCustomer().getEmail());
-            stat.setInt(4, insertado.getproductQuantity());
-            stat.setDouble(5, insertado.getSubtotal());
-            stat.setString(6, insertado.getcreationDataTime().toString());
-            stat.setInt(7, insertado.gethandlingTime());
-            stat.setBoolean(8,insertado.isCancellable());
+            // stat.setInt(1, 0);
+            stat.setString(1, insertado.getProductID());
+            stat.setString(2, insertado.getCustomerEmail());
+            stat.setInt(3, insertado.getproductQuantity());
+            // stat.setDouble(5, insertado.getSubtotal());
+            // stat.setString(6, insertado.getcreationDataTime().toString());
+            // stat.setInt(7, insertado.gethandlingTime());
+            // stat.setBoolean(8,insertado.isCancellable());
             if (stat.executeUpdate() ==0){
                 throw new DAOException("Puede que el pedido no se haya guardado");
         }
@@ -77,15 +77,12 @@ public class MySQLOrderDAO implements OrderDAO {
             String productID = rs.getString("productID");
             String customerEmail = rs.getString("customerEmail");
             int productQuantity = rs.getInt("productQuantity");
-            //Double subtotal = rs.getDouble("subtotal");
+            Double subtotal = rs.getDouble("subtotal");
             //LocalDateTime creationDataTime =  rs.getTimestamp(6).toLocalDateTime();
-            //int handlingTime = rs.getInt("handlingTime");
+            int handlingTime = rs.getInt("handlingTime");
             //Boolean isSent=rs.getBoolean("isSent");
 
-            Product product = null;
-            Customer customer = null;
-
-            Order order = new Order (product, customer, productQuantity);
+            Order order = new Order (productID, customerEmail, productQuantity, subtotal, handlingTime);
             return order; 
         }
 
@@ -162,8 +159,8 @@ public class MySQLOrderDAO implements OrderDAO {
         try{
             stat = conn.prepareStatement(UPDATE);
             stat.setInt(1, modificado.getorderID());
-            stat.setString(2, modificado.getProduct().getproductID());
-            stat.setString(3, modificado.getCustomer().getEmail());
+            stat.setString(2, modificado.getProductID());
+            stat.setString(3, modificado.getCustomerEmail());
             stat.setInt(4, modificado.getproductQuantity());
             stat.setDouble(5, modificado.getSubtotal());
             stat.setString(6, modificado.getcreationDataTime().toString());

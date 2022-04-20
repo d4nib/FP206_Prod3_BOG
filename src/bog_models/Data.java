@@ -18,9 +18,9 @@ public class Data {
         this.mySQLDaoManager = new MySQLDaoManager(); 
         this.customers = mySQLDaoManager.getCustomerDAO().readAll();
         this.products = mySQLDaoManager.getProductDAO().readAll();
-        //this.orders = mySQLDaoManager.getOrderDAO().readAll();
+        // this.orders = mySQLDaoManager.getOrderDAO().readAll();
+    
         
-        // cargarDatos();
     }
    
     
@@ -53,7 +53,6 @@ public class Data {
     public void addCustomer(Customer customer) throws Exception {
         try {
             this.mySQLDaoManager.getCustomerDAO().create(customer); 
-            this.customers.add(customer); // Actualización de Customers.
         } catch (Exception e) {
             throw e;
         }
@@ -105,13 +104,14 @@ public class Data {
 
     public void addOrder(Order order) throws Exception {
         try {
-            this.orders.add(order);
+            this.mySQLDaoManager.getOrderDAO().create(order); //************************************************|||******
         } catch (Exception e) {
             throw e;
         }
 
     }
-    
+
+
     public void deleteOrder(Order order) throws DAOException {
         this.mySQLDaoManager.getOrderDAO().delete(order);;
     }
@@ -146,7 +146,7 @@ public class Data {
 
 
 
-    //private void cargarDatos(){
+    // private void cargarDatos(){
         // Customer customer = new Customer("Paco", "Saiz", "psaiz@gmail.com", "C/Toledo 178", "12345678A", CustomerType.REGULAR);
         // try {
             
@@ -180,23 +180,20 @@ public class Data {
         // } catch (Exception e) {
             
         //}
-        // Order order = new Order(products.getAt(0), customers.getAt(0), 1);
+        // Order order = new Order("001A", "db@gmail.com", 1,);
         // try {
-        //     orders.add(order);
-        //     order = new Order(products.getAt(1), customers.getAt(3), 2);
-        //     orders.add(order);
-        //     order = new Order(products.getAt(2), customers.getAt(2), 1);
-        //     orders.add(order);
-        //     order = new Order(products.getAt(3), customers.getAt(4), 3);
-        //     orders.add(order);
-        //     order = new Order(products.getAt(5), customers.getAt(0), 1);
-        //     orders.add(order); 
-        //     order = new Order(products.getAt(4), customers.getAt(1), 2);
-        //     orders.add(order); 
+        //     addOrder(order);
+        //     order = new Order("002A", "jper3z@gmail.com", 2);
+        //     addOrder(order);
+        //     order = new Order("004A", "om@uoc.edu", 1);
+        //     addOrder(order);
+        //     order = new Order("A007", "samusitoBol@gmail.com", 3);
+        //     addOrder(order);
 
-        // } catch (Exception e) {
+        // } catch (Exception e) {}
+    // }
             
-        // }
+    
 }
    
 

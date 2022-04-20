@@ -1,6 +1,7 @@
 package bog_views;
 
 
+
 import java.sql.SQLException;
 import java.util.Scanner;
 
@@ -68,8 +69,6 @@ public class GestionOS {
   }
 
   public void createOrder(Scanner scanner) {
-    Customer customer;
-    Product product;
     System.out.println("=== Create Order: ");
     System.out.print("Customer Email: ");
     String customerEmail = scanner.next();
@@ -77,14 +76,17 @@ public class GestionOS {
       System.out.print("* Enter new customer: \n");
       this.createCustomer(scanner);
     } else System.out.print("* This customer is aready in data base \n");
-    customer = this.customersController.returnCustomer(customerEmail);
+    //customerEmail = this.customersController.returnCustomer(customerEmail).getEmail();
     this.productsController.list();
     System.out.print("Product SKU: ");
     String productId = scanner.next();
-    product = this.productsController.returnProduct(productId);
+    // product = this.productsController.returnProduct(productId);
     System.out.print("Quantity: ");
     int quantity = scanner.nextInt();
-    final Order newOrder = new Order(product, customer,  quantity);
+
+    double subtotal = this.productsController.returnProduct(productId).getPrice() * quantity;
+    int hadlingTime = this.productsController.returnProduct(productId).gethandlingTime();
+    final Order newOrder = new Order(productId, customerEmail,  quantity, subtotal, hadlingTime);
     this.ordersController.create(newOrder);
 
   }
