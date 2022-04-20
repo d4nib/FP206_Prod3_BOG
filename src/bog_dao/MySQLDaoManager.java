@@ -23,10 +23,6 @@ public class MySQLDaoManager implements IDaoManager {
         daoOrderFactory = new MySQLDaoOrderFactory();
     }
 
-        // Retorno de conexión a la B
-    public Connection returnConn(){
-        return this.con;
-    }
 
     @Override
     public ProductDAO getProductDAO() {

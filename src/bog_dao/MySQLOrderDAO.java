@@ -1,16 +1,15 @@
 /* orders
-+------------------+-------------+------+-----+---------+----------------+
-| Field            | Type        | Null | Key | Default | Extra          |
-+------------------+-------------+------+-----+---------+----------------+
-| orderID          | int(11)     | NO   | PRI | NULL    | auto_increment |
-| productID        | varchar(5)  | YES  | MUL | NULL    |                |
-| customerEmail    | varchar(50) | YES  | MUL | NULL    |                |
-| productQuantity  | int(11)     | YES  |     | NULL    |                |
-| subtotal         | double      | YES  |     | NULL    |                |
-| creationDateTIme | datetime    | YES  |     | NULL    |                |
-| hadnlingTime     | int(11)     | YES  |     | NULL    |                |
-| isSent           | tinyint(4)  | YES  |     | 0       |                |
-+------------------+-------------+------+-----+---------+----------------+
++------------------+--------------+------+-----+---------+----------------+
+| Field            | Type         | Null | Key | Default | Extra          |
++------------------+--------------+------+-----+---------+----------------+
+| orderID          | int(11)      | NO   | PRI | NULL    | auto_increment |
+| productID        | varchar(5)   | YES  | MUL | NULL    |                |
+| customerEmail    | varchar(50)  | YES  | MUL | NULL    |                |
+| productQuantity  | int(11)      | YES  |     | NULL    |                |
+| subtotal         | decimal(5,2) | YES  |     | NULL    |                |
+| creationDateTIme | varchar(50)  | YES  |     | NULL    |                |
+| handlingTime     | int(11)      | YES  |     | NULL    |                |
++------------------+--------------+------+-----+---------+----------------+
 */ 
 
 
@@ -21,6 +20,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 
@@ -31,10 +31,10 @@ import bog_models.Order;
 
 public class MySQLOrderDAO implements OrderDAO {
     
-    final String INSERT = "INSERT INTO orders (productID , customerEmail, productQuantity) VALUES (?, ?, ?);";
+    final String INSERT = "INSERT INTO orders (productID , customerEmail, productQuantity, subtotal, creationDateTIme, hadnlingTime ) VALUES (?, ?, ?, ?, ?, ?);";
     final String UPDATE = "UPDATE orders SET orderID = ?, productID = ?, customerEmail = ?, productQuantity = ?, subtotal = ?, creationDateTime = ?, handlingTime = ?, isSent = ?";
     final String DELETE = "DELETE FROM orders WHERE orderID = ?";
-    final String GETALL = "SELECT orderID, productID, customerEmail, productQuantity, subtotal, creationDateTime, handlingTime, isSent FROM orders";
+    final String GETALL = "SELECT * FROM orders";
     final String GETONE = "SELECT orderID, productID, customerEmail, productQuantity, subtotal, creationDateTime, handlingTime, isSent FROM orders WHERE orderID = ?";
 
 
@@ -53,36 +53,37 @@ public class MySQLOrderDAO implements OrderDAO {
             stat.setString(1, insertado.getProductID());
             stat.setString(2, insertado.getCustomerEmail());
             stat.setInt(3, insertado.getproductQuantity());
-            // stat.setDouble(5, insertado.getSubtotal());
-            // stat.setString(6, insertado.getcreationDataTime().toString());
-            // stat.setInt(7, insertado.gethandlingTime());
+            stat.setDouble(4, insertado.getSubtotal());
+            stat.setString(5, LocalDateTime.now().toString());
+            stat.setInt(6, insertado.gethandlingTime());
             // stat.setBoolean(8,insertado.isCancellable());
             if (stat.executeUpdate() ==0){
                 throw new DAOException("Puede que el pedido no se haya guardado");
         }
         } catch (SQLException ex) {
-            throw new DAOException("Error en SQL", ex);
+            throw new DAOException("Error de creación", ex);
         } finally {
             if (stat != null){
                 try {
                     stat.close();
                 }catch (SQLException ex){
-                    throw new DAOException ("Error en SQL", ex);
+                    throw new DAOException ("No se ha podido cerrar la conexión", ex);
                 }
             }
         }        
     }
     
         private Order convertir(ResultSet rs) throws SQLException{
+            int orderID = rs.getInt("orderID");
             String productID = rs.getString("productID");
             String customerEmail = rs.getString("customerEmail");
             int productQuantity = rs.getInt("productQuantity");
             Double subtotal = rs.getDouble("subtotal");
-            //LocalDateTime creationDataTime =  rs.getTimestamp(6).toLocalDateTime();
+            String creationDateTime = rs.getNString("creationDateTime");
             int handlingTime = rs.getInt("handlingTime");
             //Boolean isSent=rs.getBoolean("isSent");
 
-            Order order = new Order (productID, customerEmail, productQuantity, subtotal, handlingTime);
+            Order order = new Order (orderID, productID, customerEmail, productQuantity, subtotal, creationDateTime, handlingTime);
             return order; 
         }
 

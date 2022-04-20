@@ -44,7 +44,7 @@ public class GestionOS {
     String typeStr = scanner.next();
     CustomerType customerType = CustomerType.valueOf(typeStr.toUpperCase());
 
-    final Customer newCustomer = new Customer(firstname, lastname, email, address, idCardNumber, customerType);
+    final Customer newCustomer = new Customer(email, firstname, lastname,  address, idCardNumber, customerType);
     this.customersController.create(newCustomer);
   }
 
@@ -76,7 +76,7 @@ public class GestionOS {
       System.out.print("* Enter new customer: \n");
       this.createCustomer(scanner);
     } else System.out.print("* This customer is aready in data base \n");
-    //customerEmail = this.customersController.returnCustomer(customerEmail).getEmail();
+    customerEmail = this.customersController.returnCustomer(customerEmail).getEmail();
     this.productsController.list();
     System.out.print("Product SKU: ");
     String productId = scanner.next();
@@ -86,7 +86,7 @@ public class GestionOS {
 
     double subtotal = this.productsController.returnProduct(productId).getPrice() * quantity;
     int hadlingTime = this.productsController.returnProduct(productId).gethandlingTime();
-    final Order newOrder = new Order(productId, customerEmail,  quantity, subtotal, hadlingTime);
+    final Order newOrder = new Order(productId, customerEmail, quantity, subtotal, hadlingTime);
     this.ordersController.create(newOrder);
 
   }

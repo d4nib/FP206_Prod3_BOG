@@ -13,9 +13,9 @@ public class Customer {
     protected int customerDiscount;
 
     // CONSTRUCTOR
-    public Customer(String firstname, String lastname, String email, String address, String idCardNumber,
+    public Customer(String email, String firstname, String lastname,  String address, String idCardNumber,
             CustomerType type) {
-        this.firstname = firstname;
+        this.firstname = firstname; 
         this.lastname = lastname;
         this.email = email;
         this.address = address;

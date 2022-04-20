@@ -6,9 +6,6 @@ import java.time.LocalDateTime;
 
 
 
-
-
-
 public class Order {
     public static int orderIDnumber;
     private int orderID;
@@ -16,7 +13,7 @@ public class Order {
     private String customerEmail;
     private int productQuantity;
     private double subtotal;
-    private LocalDateTime creationDataTime;
+    private LocalDateTime creationDateTime;
     private int handlingTime;
     private boolean isSent;
 
@@ -27,7 +24,17 @@ public class Order {
         this.productQuantity = productQuantity; 
         this.subtotal = subtotal;
         this.handlingTime = hadlingTime;
-        this.creationDataTime = LocalDateTime.now();
+        
+
+    }
+    public Order(int orderID, String productID, String customerEmail, int productQuantity, double subtotal, String creationDateTime ,int hadlingTime) {
+        this.orderID = orderID;
+        this.productID = productID;
+        this.customerEmail = customerEmail;
+        this.productQuantity = productQuantity; 
+        this.subtotal = subtotal;
+        this.handlingTime = hadlingTime;
+        this.creationDateTime = LocalDateTime.parse(creationDateTime) ;
 
     }
         
@@ -68,7 +75,7 @@ public class Order {
 
     public boolean orderSent() {
         // Creamos la fecha en la que el pedido estará lista
-        LocalDateTime handlingResult = creationDataTime.plusDays(handlingTime);
+        LocalDateTime handlingResult = creationDateTime.plusDays(handlingTime);
 
         // Pasada esa fecha el articulo se habrá enviado
         if (LocalDateTime.now().compareTo(handlingResult) > 0) {
@@ -125,11 +132,11 @@ public class Order {
     }
 
     public LocalDateTime getcreationDataTime() {
-        return creationDataTime;
+        return creationDateTime;
     }
 
-    public void setcreationDataTime(LocalDateTime creationDataTime) {
-        this.creationDataTime = creationDataTime;
+    public void setcreationDataTime(LocalDateTime creationDateTime) {
+        this.creationDateTime = creationDateTime;
     }
 
     public int gethandlingTime() {
@@ -153,7 +160,7 @@ public class Order {
 
     @Override
     public String toString() {
-        return "Order [creationDataTime=" + creationDataTime + ", customer=" + customerEmail + ", handlingTime="
+        return "Order [creationDataTime=" + creationDateTime + ", customer=" + customerEmail + ", handlingTime="
                 + handlingTime + ", product="
                 + productID + ", productQuantity=" + productQuantity + ", orderID="
                 + orderID

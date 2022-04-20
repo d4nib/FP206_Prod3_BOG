@@ -1,14 +1,14 @@
 /* products
-+-------------+--------------+------+-----+---------+-------+
-| Field       | Type         | Null | Key | Default | Extra |
-+-------------+--------------+------+-----+---------+-------+
-| productID   | varchar(5)   | NO   | PRI | NULL    |       |
-| productName | varchar(45)  | YES  |     | NULL    |       |
-| description | varchar(500) | YES  |     | NULL    |       |
-| price       | double       | YES  |     | NULL    |       |
-| shippingFee | double       | YES  |     | NULL    |       |
-| hadlingTime | int(11)      | YES  |     | NULL    |       |
-+-------------+--------------+------+-----+---------+-------+
++--------------+--------------+------+-----+---------+-------+
+| Field        | Type         | Null | Key | Default | Extra |
++--------------+--------------+------+-----+---------+-------+
+| productID    | varchar(5)   | NO   | PRI | NULL    |       |
+| productName  | varchar(45)  | YES  |     | NULL    |       |
+| description  | varchar(500) | YES  |     | NULL    |       |
+| price        | double       | YES  |     | NULL    |       |
+| shippingFee  | double       | YES  |     | NULL    |       |
+| handlingTime | int(11)      | YES  |     | NULL    |       |
++--------------+--------------+------+-----+---------+-------+
  */
 package bog_dao;
 import bog_models.Product;

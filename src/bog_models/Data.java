@@ -16,9 +16,9 @@ public class Data {
    
     public Data() throws DAOException, SQLException {
         this.mySQLDaoManager = new MySQLDaoManager(); 
-        this.customers = mySQLDaoManager.getCustomerDAO().readAll();
-        this.products = mySQLDaoManager.getProductDAO().readAll();
-        // this.orders = mySQLDaoManager.getOrderDAO().readAll();
+        this.customers = readDBCustomers();
+        this.products = readDBProducts();
+        this.orders = readDBOrders();
     
         
     }
@@ -30,11 +30,16 @@ public class Data {
         return this.customers;
     }
 
+    public ArrayList<Customer> readDBCustomers() throws DAOException {
+        return mySQLDaoManager.getCustomerDAO().readAll();
+    }
+
     public ArrayList<Customer> getPremiumCustomers(){
         ArrayList<Customer> customers = new ArrayList<Customer>();
         for (int i=0; i < this.customers.size(); i++){
             if (this.customers.get(i).getType() == CustomerType.PREMIUM){
                 customers.add(this.customers.get(i));
+                
             }
         }
         return customers;
@@ -53,6 +58,7 @@ public class Data {
     public void addCustomer(Customer customer) throws Exception {
         try {
             this.mySQLDaoManager.getCustomerDAO().create(customer); 
+            this.customers = readDBCustomers();
         } catch (Exception e) {
             throw e;
         }
@@ -75,23 +81,30 @@ public class Data {
 
     public void deleteCustomer(Customer customer) throws DAOException {
         this.mySQLDaoManager.getCustomerDAO().delete(customer);
+        this.customers = readDBCustomers();
     }
 
     // Product data functions ******************************************************************
     public ArrayList<Product> getProducts() {
         return this.products;
     }
+    
+    public ArrayList<Product> readDBProducts() throws DAOException {
+        return mySQLDaoManager.getProductDAO().readAll();
+    }
 
     public void addProduct(Product product) throws Exception {
         try {
             this.mySQLDaoManager.getProductDAO().create(product);
+            this.products = readDBProducts();
         } catch (Exception e) {
             throw e;
         }
     }
 
     public void deleteProduct(Product product) throws DAOException {
-        this.mySQLDaoManager.getProductDAO().delete(product);;
+        this.mySQLDaoManager.getProductDAO().delete(product);
+        this.products = readDBProducts();
     }
 
     public int lenghtProduct (){
@@ -101,10 +114,15 @@ public class Data {
     public ArrayList<Order> getOrders() {
         return this.orders;
     }
+    public ArrayList<Order> readDBOrders() throws DAOException {
+        return mySQLDaoManager.getOrderDAO().readAll();
+    }
+
 
     public void addOrder(Order order) throws Exception {
         try {
-            this.mySQLDaoManager.getOrderDAO().create(order); //************************************************|||******
+            this.mySQLDaoManager.getOrderDAO().create(order); 
+            this.orders = readDBOrders();
         } catch (Exception e) {
             throw e;
         }
@@ -113,7 +131,8 @@ public class Data {
 
 
     public void deleteOrder(Order order) throws DAOException {
-        this.mySQLDaoManager.getOrderDAO().delete(order);;
+        this.mySQLDaoManager.getOrderDAO().delete(order);
+        this.orders = readDBOrders();
     }
 
     public int lenghtOrders(){
